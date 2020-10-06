@@ -17,6 +17,7 @@ DRIVER_BIN = os.path.join(PROJECT_ROOT, "bin/chromedriver_v85_mac")
 username = os.getenv("USERNAME")
 email = os.getenv("EMAIL")
 password = os.getenv("PASSWORD")
+interval = os.getenv("INTERVAL")
 
 page_url = 'https://poshmark.ca'
 login_url = page_url + '/login'
@@ -82,6 +83,8 @@ def login():
 def load_all_listings():
     scroll_pause_time = 0.5
 
+    driver.get(closet_url)
+
     # Get scroll height
     last_height = driver.execute_script("return document.body.scrollHeight")
 
@@ -110,9 +113,7 @@ def share_to_followers(share_btn):
     time.sleep(5)
 
 
-def share_listings():
-    driver.get(closet_url)
-
+def share_listings(share_buttons):
     try:
         login_button = driver.find_element_by_class_name("header__login-signup")
         if login_button:
@@ -121,22 +122,24 @@ def share_listings():
     except NoSuchElementException:
         print("Login successful")
 
-    load_all_listings()
-
-    share_buttons = driver.find_elements_by_xpath('//div[@data-et-name="share"]')
     print("There are: ", len(share_buttons), " listings")
 
     i = 0
     for share_btn in share_buttons:
         share_to_followers(share_btn)
         i += 1
-        print("Listing: ", i)
+        print("Shared Listing: #", i)
 
 
 def main():
     login()
 
-    share_listings()
+    load_all_listings()
+
+    share_buttons = driver.find_elements_by_xpath('//div[@data-et-name="share"]')
+    while True:
+        share_listings(share_buttons)
+        time.sleep(int(interval))
 
 
 if __name__ == '__main__':
