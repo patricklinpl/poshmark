@@ -1,6 +1,6 @@
 # Poshmark
 
-Automate the sharing of your listings. 
+Automate the sharing part of your listings. 
 
 ## Requirements 
 
