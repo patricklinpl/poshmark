@@ -2,6 +2,7 @@ import os
 import pickle
 import sys
 import time
+import chromedriver_autoinstaller
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -11,8 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-DRIVER_BIN = os.path.join(PROJECT_ROOT, "bin/chromedriver_v85_mac")
+chromedriver_autoinstaller.install()
 
 username = os.getenv("USERNAME")
 email = os.getenv("EMAIL")
@@ -25,7 +25,7 @@ available_option = '?availability=available&condition=closet&all_size=true&my_si
 closet_url = page_url + '/closet/' + username + available_option
 logout_url = page_url + '/logout'
 
-driver = webdriver.Chrome(executable_path=DRIVER_BIN)
+driver = webdriver.Chrome()
 actions = ActionChains(driver)
 
 
